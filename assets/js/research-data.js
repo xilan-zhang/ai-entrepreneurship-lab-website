@@ -134,15 +134,15 @@ window.LAB_RESEARCH = {
  ],
  "studies": [
   {
-   "id": "when-external-shocks-attract-capital-export-controls-and-ven-china",
+   "id": "external-supply-shocks-and-venture-capital-reallocation-china",
    "place": "china",
-   "title": "When External Shocks Attract Capital: Export Controls and Venture Capital Allocation in China",
+   "title": "External Supply Shocks and Venture Capital Reallocation in Strategic Technologies",
    "authors": "Yikai Cao, Wanru Deng, Guankai Zhai, Charles Eesley",
    "year": null,
    "venue": "working paper",
    "status": "working",
-   "method": "Policy evaluation",
-   "summary": "Working paper on how export controls affecting China's semiconductor sector shifted venture capital toward Chinese semiconductor startups.",
+   "method": "Causal inference",
+   "summary": "Links policy, venture-investment and firm-panel data to estimate how an external supply shock reallocates venture capital, using staggered difference-in-differences and double machine learning.",
    "url": "https://chuckeesley.com/research"
   },
   {
@@ -158,15 +158,15 @@ window.LAB_RESEARCH = {
    "url": "https://chuckeesley.com/research"
   },
   {
-   "id": "industrial-policy-reshapes-venture-capital-allocation-and-gr-us",
+   "id": "tax-credits-venture-capital-allocation-and-startup-growth-us",
    "place": "us",
-   "title": "Industrial Policy Reshapes Venture Capital Allocation and Growth Trajectories in Climate Technologies",
+   "title": "Tax Credits, Venture Capital Allocation and Startup Growth in Climate Technologies",
    "authors": "Yikai Cao, Charles Eesley, Rishee Jain, Dinesh Moorjani",
    "year": null,
    "venue": "working paper",
    "status": "working",
-   "method": "Policy evaluation",
-   "summary": "Working paper on how the US Inflation Reduction Act shifted venture capital allocation and growth paths in climate technologies.",
+   "method": "Machine learning",
+   "summary": "Combines LLM classification of 17,000+ climate-tech firms, a RAG-based policy-uncertainty index and Hidden Markov Models with causal inference to estimate how clean-energy tax credits shift venture allocation and startup growth.",
    "url": "https://chuckeesley.com/research",
    "evidence": "https://profiles.stanford.edu/charles-eesley"
   },
