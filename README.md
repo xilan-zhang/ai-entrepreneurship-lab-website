@@ -20,12 +20,16 @@ GitHub displays HTML source files. To see the rendered website, open the downloa
 
 | File | Content |
 | --- | --- |
-| `index.html` | Homepage, About, People and research entry |
-| `research.html` | Research index |
+| `index.html` | Homepage: photo hero, About, research globe, featured research, People |
+| `research.html` | Research index and the list of studies by place (`#place-…` anchors) |
 | `uganda.html` | Uganda research page |
-| `styles.css` | Shared layout, colors and responsive styles |
-| `assets/` | Photographs used by the website |
-| [docs/SOURCES.md](docs/SOURCES.md) | Public sources and photo credits |
+| `styles.css` | Shared layout, colours, type and responsive styles |
+| `assets/js/research-data.js` | Places and studies: citations, sources, status and the page each place links to |
+| `assets/js/globe.js` | Rotating research globe on the homepage |
+| `assets/js/research-list.js` | Studies-by-place list on `research.html` |
+| `assets/` | Photographs, fonts and the map libraries (`assets/vendor/`) |
+| [docs/STYLE.md](docs/STYLE.md) | Style contract: type, colour, layout and map rules |
+| [docs/SOURCES.md](docs/SOURCES.md) | Public sources, photo credits and licences |
 
 ## Collaborate
 
@@ -35,7 +39,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the editing workflow and current cont
 
 ## Current content
 
-- People lists Chuck Eesley, with placeholders for additional members.
+- People lists Chuck Eesley, Tess Lallemant, Yikai Cao, Ronald Wang, Guankai Zhai and Xilan Zhang (faculty, then postdoctoral fellows, then students by last name), plus a placeholder for additional members.
+- The homepage globe places each study by Chuck Eesley and collaborators where its data were collected. To add or correct a study, edit `assets/js/research-data.js`; every entry needs a public source link.
 - The Uganda page separates the established mentorship study from the planned AI advice study and the separate prospective savings-group pilot.
 - The contact section is a placeholder. Personal contact details should not be added without an agreed change.
 - The site remains a working preview. Uploading source to this private repository does not launch an official Stanford website.
@@ -44,6 +49,10 @@ The photographs have visible source credits. Permission for public republication
 
 ## Preview
 
-![Uganda research page preview](docs/uganda-preview.png)
+Screenshots recorded on October 30, 2026 at 1440 px wide. The HTML files are the editable source.
 
-This image records the October 29, 2026 layout. The HTML files are the editable source.
+![Homepage hero](docs/preview-home.jpg)
+
+![Research globe on the homepage](docs/preview-globe.jpg)
+
+![Uganda research page](docs/preview-uganda.jpg)

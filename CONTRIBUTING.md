@@ -26,10 +26,13 @@ Open the pull request using the link GitHub returns. For small text edits, GitHu
 
 - Keep the working-preview notice until the site is ready for an agreed public launch.
 - The removed hero line “A research group in development” stays absent.
-- People currently lists only Chuck Eesley. Other members remain placeholders until inclusion and roles are agreed.
+- People lists the members Xilan named on October 30, 2026, with current professional roles only, and keeps a placeholder card because the list is incomplete. Do not add proposed lab titles until they are agreed.
 - Do not restore the removed personal email or substitute another person's address without an agreed change.
 - Keep the mentorship study, planned AI advice-presentation study and prospective savings-group pilot distinct. Preparation, proposals and observed findings have different meanings.
 - Support research statements with sources. Do not turn early presentation scenarios, provisional budgets or unreported findings into established results.
+- Research globe entries (`assets/js/research-data.js`) need a public source for the place and the citation. Keep `confirm: true` on entries taken from internal records until the authors approve them, and use the status that applies today: Published, Under review, Working paper, In progress or Planned.
+- Design changes follow [docs/STYLE.md](docs/STYLE.md). Change colours and type through the tokens at the top of `styles.css`.
+- The hero photograph is CC BY-SA 4.0. Keep its credit visible on the homepage.
 - Preserve image credits and meaningful alt text. Record new image sources and permissions in `docs/SOURCES.md`.
 - Use plain English, semantic heading levels, readable contrast and layouts that work on narrow screens.
 
