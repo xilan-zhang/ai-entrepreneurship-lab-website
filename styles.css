@@ -204,7 +204,6 @@ nav[aria-label="Main navigation"] a[aria-current] { color: var(--cardinal); bord
 .footer-inner { max-width: var(--max); margin: 0 auto; padding: 40px var(--gutter) 44px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 48px; align-items: end; }
 .site-footer strong { display: block; font: 500 20px/1.2 var(--serif); color: var(--ink); margin-bottom: 6px; }
 .footer-note { text-align: right; }
-.footer-credits { grid-column: 1 / -1; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12.5px; line-height: 1.6; color: var(--stone); }
 
 /* Page heading used by Research, Map and Uganda pages */
 .page-hero { position: relative; background: var(--warm); overflow: hidden; border-bottom: 1px solid var(--line); }
