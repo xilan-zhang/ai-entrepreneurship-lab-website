@@ -43,7 +43,7 @@ Photo sources are credited in the pages. The inspected source pages did not iden
 - License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Attribution is required. The resized copies here are shared under the same license.
 - Original: 5247 × 3498 pixels, SHA-1 `e383f675520e94b29523515c9326bf4e65fe4f3a` (matches the Commons record), downloaded October 30, 2026.
 - Changes: resized to 2400 × 1600 (SHA-256 `f5120ad796c0207954c28a17a5935ebdb9f80fc68b238d9d3d15d2e3264e6c52`) and 1200 × 800 (SHA-256 `62963f512f75ad43e257fa30227cc94b90985ead87e7958046bc75b58b572cca`). The navy shading is applied in CSS; the image files are not tinted or cropped.
-- The credit is shown in the homepage hero and footer. Keep it there.
+- The credit is shown in the homepage hero as "Photo: Frank Schulenburg", linked to the Wikimedia Commons file page, which states the licence and the original. CC BY-SA 4.0 allows attribution through a link to a page with that information. Keep the name and the link.
 
 ## People photographs
 
