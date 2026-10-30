@@ -1,0 +1,14 @@
+.DS_Store
+._*
+Thumbs.db
+*.swp
+*.swo
+*~
+.env
+.env.*
+*.pem
+*.key
+__pycache__/
+.venv/
+.vscode/
+.idea/
