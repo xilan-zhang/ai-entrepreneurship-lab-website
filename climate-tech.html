@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Working paper on how the Inflation Reduction Act and its attempted 2025 rollback changed venture investment in U.S. climate-technology firms.">
+  <meta name="description" content="Working paper on how the Inflation Reduction Act changed venture investment and financing in U.S. climate-technology firms.">
   <title>Climate Finance Research — AI &amp; Entrepreneurship Lab</title>
   <link rel="stylesheet" href="styles.css?v=20261031-topics">
 </head>
@@ -28,7 +28,7 @@
       <div class="wrap">
       <a class="back-link" href="research.html"><span aria-hidden="true">←</span> All research</a>
       <h1>Industrial policy and<br>climate finance</h1>
-      <p class="deck">When governments promise long-term support, does private capital follow? And what happens when those promises come under threat?</p>
+      <p class="deck">When governments promise long-term support, does private capital follow? And does the design of the commitment matter?</p>
       <nav class="page-jumps" aria-label="On this page"><a href="#question">The question</a><a href="#design">Data and design</a><a href="#findings">Findings</a><a href="#credibility">Policy credibility</a><a href="#limits">Interpretation</a></nav>
       </div>
     </header>
@@ -55,7 +55,7 @@
           <li><strong>Difference-in-differences and event studies</strong> with firm and time fixed effects and firm-clustered standard errors, using both a binary treatment and continuous exposure measures.</li>
           <li><strong>LLM-based exposure index.</strong> A large language model scores each firm's business description against the statutory language of each IRA provision (0–7); a text-similarity score provides a second, independent measure.</li>
           <li><strong>Financing trajectories.</strong> Financing events are classified into phases, and a four-state Hidden Markov Model fitted to 14,357 event sequences recovers financing regimes from the data.</li>
-          <li><strong>Policy Credibility Index.</strong> Provision-level scores for specificity, durability and enforceability, and a stress test using the 2025 proposals to roll back parts of the IRA.</li>
+          <li><strong>Policy Credibility Index.</strong> Provision-level scores for specificity, durability and enforceability, built from the statutory text.</li>
         </ul>
       </div>
     </section>
@@ -92,31 +92,29 @@
     <section id="credibility" class="uganda-section" aria-labelledby="credibility-title">
       <div class="uganda-section-label"><h2 id="credibility-title">Policy credibility</h2></div>
       <div class="uganda-prose">
-        <p class="lead">Investors price durability. Not every provision of the IRA is equally credible, and investment followed those differences.</p>
+        <p class="lead">Investors price durability, and not every provision of the IRA is equally credible.</p>
         <p>The Policy Credibility Index scores each provision on specificity, durability and enforceability (1–5 each). Two researchers scored provisions independently (over 85% agreement before reconciliation), and a blind re-scoring by LLM judges reproduces the ranking (ρ = 0.86). Self-executing tax credits score highest; discretionary loan programs score lowest.</p>
         <figure class="data-figure">
-          <svg viewBox="0 0 600 262" role="img" aria-labelledby="fig-pci-title fig-pci-desc">
+          <svg viewBox="0 0 500 262" role="img" aria-labelledby="fig-pci-title fig-pci-desc">
 <title id="fig-pci-title">Policy Credibility Index by IRA provision</title>
-<desc id="fig-pci-desc">Baseline PCI at enactment on a 1 to 5 scale, with the 2025 change. 45X 4.67, change −1.00. 45V 4.33, −1.00. 45Q 4.33, no change. 30D 4.00, −1.00. 50144 3.33, −1.33. 50141 3.00, −0.67.</desc>
-<text class="fig-label" x="240" y="18">Baseline score at enactment, Aug 2022 (1–5)</text>
-<text class="fig-label" x="600" y="18" text-anchor="end">2025 change</text>
+<desc id="fig-pci-desc">Baseline PCI at enactment on a 1 to 5 scale. 45X 4.67, 45V 4.33, 45Q 4.33, 30D 4.00, 50144 3.33, 50141 3.00.</desc>
+<text class="fig-label" x="240" y="18">Score at enactment, Aug 2022 (1–5)</text>
 <line class="fig-axis" x1="240" y1="30" x2="240" y2="250"/>
 <text class="fig-label-strong" x="0" y="54">45X</text><text class="fig-label" x="54" y="54">Advanced manufacturing</text>
-<rect class="fig-bar" x="240" y="40" width="205" height="20" rx="2"/><text class="fig-value" x="452" y="55">4.67</text><text class="fig-value" x="600" y="55" text-anchor="end">−1.00</text>
+<rect class="fig-bar" x="240" y="40" width="205" height="20" rx="2"/><text class="fig-value" x="452" y="55">4.67</text>
 <text class="fig-label-strong" x="0" y="90">45V</text><text class="fig-label" x="54" y="90">Clean hydrogen</text>
-<rect class="fig-bar" x="240" y="76" width="191" height="20" rx="2"/><text class="fig-value" x="438" y="91">4.33</text><text class="fig-value" x="600" y="91" text-anchor="end">−1.00</text>
+<rect class="fig-bar" x="240" y="76" width="191" height="20" rx="2"/><text class="fig-value" x="438" y="91">4.33</text>
 <text class="fig-label-strong" x="0" y="126">45Q</text><text class="fig-label" x="54" y="126">Carbon capture</text>
-<rect class="fig-bar" x="240" y="112" width="191" height="20" rx="2"/><text class="fig-value" x="438" y="127">4.33</text><text class="fig-label" x="600" y="127" text-anchor="end">none</text>
+<rect class="fig-bar" x="240" y="112" width="191" height="20" rx="2"/><text class="fig-value" x="438" y="127">4.33</text>
 <text class="fig-label-strong" x="0" y="162">30D</text><text class="fig-label" x="54" y="162">Clean vehicles</text>
-<rect class="fig-bar" x="240" y="148" width="176" height="20" rx="2"/><text class="fig-value" x="423" y="163">4.00</text><text class="fig-value" x="600" y="163" text-anchor="end">−1.00</text>
+<rect class="fig-bar" x="240" y="148" width="176" height="20" rx="2"/><text class="fig-value" x="423" y="163">4.00</text>
 <text class="fig-label-strong" x="0" y="198">50144</text><text class="fig-label" x="54" y="198">Energy infrastructure (LPO)</text>
-<rect class="fig-bar-soft" x="240" y="184" width="147" height="20" rx="2"/><text class="fig-value" x="394" y="199">3.33</text><text class="fig-value" x="600" y="199" text-anchor="end">−1.33</text>
+<rect class="fig-bar-soft" x="240" y="184" width="147" height="20" rx="2"/><text class="fig-value" x="394" y="199">3.33</text>
 <text class="fig-label-strong" x="0" y="234">50141</text><text class="fig-label" x="54" y="234">Loan Programs Office</text>
-<rect class="fig-bar-soft" x="240" y="220" width="132" height="20" rx="2"/><text class="fig-value" x="379" y="235">3.00</text><text class="fig-value" x="600" y="235" text-anchor="end">−0.67</text>
+<rect class="fig-bar-soft" x="240" y="220" width="132" height="20" rx="2"/><text class="fig-value" x="379" y="235">3.00</text>
 </svg>
-          <figcaption><strong>Policy Credibility Index by provision.</strong> Change: proposed 2025 amendments to each provision, scored on the same rubric. Section 45Q was unaffected and serves as a comparison.</figcaption>
+          <figcaption><strong>Policy Credibility Index by provision.</strong> Baseline scores at enactment. Self-executing tax credits (dark) score above discretionary loan-program authorities (light).</figcaption>
         </figure>
-        <article class="finding"><h3>A stress test in 2025</h3><p>The 2025 "One Big Beautiful Bill Act" proposals lowered the credibility of several provisions while enacted incentives stayed in force. During those quarters, each one-unit increase in IRA alignment corresponds to a 0.20 percentage-point lower probability of receiving VC (−0.0020, SE 0.0009, p &lt; .05). The share of treated firms receiving VC fell 36% (3.9% to 2.5%), compared with 20% for control firms (4.5% to 3.6%).</p></article>
       </div>
     </section>
 
@@ -124,7 +122,6 @@
       <div class="uganda-section-label"><h2 id="limits-title">Interpretation</h2></div>
       <div class="uganda-prose">
         <ul class="method-list">
-          <li>The 2025 window covers two quarters, so the stress-test estimates should be read with caution.</li>
           <li>Financing shares are computed over deal counts, not dollars. Interest rates also rose after 2022, and the time pattern alone cannot separate policy from the rate environment; this is why the shifts are read alongside the exposure-based designs.</li>
           <li>Treated and control subfields may differ in baseline VC affinity. Firm fixed effects and continuous within-category exposure measures address this, and results hold when Transportation is reclassified as treated.</li>
           <li>A news-based Climate Policy Uncertainty index co-moves with venture activity in the same direction; it is supporting evidence, not identification.</li>
