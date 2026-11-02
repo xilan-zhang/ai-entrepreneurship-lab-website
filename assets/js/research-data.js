@@ -3,11 +3,12 @@
   Every study needs a public source (url or evidence). confirm: true marks entries taken from
   internal records or added on request; they need the authors' approval before a public launch.
   status: published | review | working | ongoing | planned | proposed | project | tbd
+  place is where the data were collected; alsoPlaces lists further places for studies that span several.
   Reviewed by Xilan on October 30, 2026 (keep/delete/author order). Compiled October 30, 2026 from publisher pages, Stanford profiles, King Center pages,
   chuckeesley.com, the AEA RCT Registry and Google Scholar. Provenance notes are kept outside the repo.
 */
 window.LAB_RESEARCH = {
- "updated": "2026-10-30",
+ "updated": "2026-11-02",
  "places": [
   {
    "id": "stanford",
@@ -28,7 +29,7 @@ window.LAB_RESEARCH = {
    "where": "National data",
    "lat": 39.83,
    "lon": -98.58,
-   "headline": "Activism, advertising and industrial policy"
+   "headline": "Advertising, industrial policy and AI-native companies"
   },
   {
    "id": "mit",
@@ -103,7 +104,7 @@ window.LAB_RESEARCH = {
    "where": "Beijing and national data",
    "lat": 35.0,
    "lon": 108.0,
-   "headline": "Institutions, universities and platforms"
+   "headline": "Institutions, industrial policy and new ventures"
   },
   {
    "id": "korea",
@@ -147,16 +148,32 @@ window.LAB_RESEARCH = {
    "url": "https://chuckeesley.com/research"
   },
   {
-   "id": "subsidy-design-without-capability-screening-entry-compositio-china",
+   "id": "what-support-selects-on-battery-china",
    "place": "china",
-   "title": "Subsidy Design Without Capability Screening: Entry Composition in China's Battery Sector",
+   "title": "What Support Selects On: Local Industrial Policy and Entrepreneurial Entry in China's Battery Industry",
    "authors": "Guankai Zhai, Charles Eesley",
    "year": null,
    "venue": "working paper",
    "status": "working",
    "method": "Policy evaluation",
-   "summary": "Working paper on how local-government supply-side subsidies across 300 Chinese prefectures shaped which firms entered China's battery sector.",
+   "summary": "Studies the battery-manufacturing support programs that 56 of China's 297 prefecture-level cities adopted between 2009 and 2025, and asks how what a program asks firms to show before they can claim a benefit shapes who enters the industry and what kinds of firms they build.",
+   "page": "battery-subsidies.html",
    "url": "https://chuckeesley.com/research"
+  },
+  {
+   "id": "ai-native-companies-organize-work",
+   "place": "us",
+   "alsoPlaces": ["china"],
+   "title": "How AI-Native Companies Organize Work",
+   "authors": "Guankai Zhai, Kathleen M. Eisenhardt, Charles Eesley",
+   "year": null,
+   "venue": "multi-case study",
+   "status": "ongoing",
+   "method": "Case studies",
+   "confirm": true,
+   "summary": "A multi-case study of young companies in the United States and China whose work is done mostly at a computer, tracing how founders divide work between people and AI agents and how that division changes as the company grows.",
+   "page": "ai-native-firms.html",
+   "url": "ai-native-firms.html"
   },
   {
    "id": "tax-credits-venture-capital-allocation-and-startup-growth-us",

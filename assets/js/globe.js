@@ -1,10 +1,11 @@
 /*
   Research globe on the homepage. Reads window.LAB_RESEARCH (assets/js/research-data.js) and draws
-  a slowly turning globe with a point for each place. Needs d3, topojson-client and world-110m.js
-  from assets/vendor/. Colours come from the --globe-* tokens in styles.css.
+  a slowly turning night globe: land as a fine dot screen, countries with studies in cardinal, and
+  raised arcs from Stanford to each place. Needs d3, topojson-client and world-110m.js from
+  assets/vendor/. Colours come from the --globe-* tokens in styles.css.
 
-  - The globe runs off the right edge of the section and turns on its own; the card shows the place
-    in the visible part nearest the front.
+  - On wide screens the globe fills the right of the opening field and runs off the edge; the card
+    shows the place in the visible part nearest the front.
   - Each point links to that place's research page (place.href), or to its section on research.html.
   - Hovering or focusing a point pauses on it. Dragging turns the globe.
   - With reduced motion requested, the globe stays still unless the visitor turns it.
@@ -14,11 +15,12 @@
 
   var DATA = window.LAB_RESEARCH;
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var STATUS = { published: "Published", review: "Under review", working: "Working paper", ongoing: "In progress", planned: "Planned", proposed: "Under discussion", project: "Funded project", tbd: "Details to add" };
-  var SPEED = 0.0045;          // degrees per millisecond, about 80 s per turn
-  var LEAD = 32;               // degrees: chosen places sit left of the globe centre, in the visible part
-  var HOLD_AFTER_SELECT = 9000; // ms the globe waits on a chosen place
+    var SPEED = 0.0045;           // degrees per millisecond, about 80 s per turn
+  var LEAD = 34;                // degrees: the "front" sits left of the globe centre, toward the text
+  var HOLD_AFTER_SELECT = 9000;
   var HOLD_AFTER_DRAG = 3000;
+  var DOT_STEP = 1.25;          // degrees between land dots
+  var RAD = Math.PI / 180;
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -27,71 +29,107 @@
     return e;
   }
   function plural(n, one, many) { return n + " " + (n === 1 ? one : many); }
-  function studiesAt(p) { return DATA.studies.filter(function (s) { return s.place === p.id; }); }
+  function placesOf(s) { return [s.place].concat(s.alsoPlaces || []); }
+  function studiesAt(p) { return DATA.studies.filter(function (s) { return placesOf(s).indexOf(p.id) !== -1; }); }
   function nameOf(p) { return p.label || p.country; }
   function hrefOf(p) { return p.href || "research.html#place-" + p.id; }
   function linkTextOf(p) { return p.linkText || "See the research in " + nameOf(p); }
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function cart(lon, lat) {
+    var l = lon * RAD, p = lat * RAD, c = Math.cos(p);
+    return [c * Math.cos(l), c * Math.sin(l), Math.sin(p)];
+  }
 
   function init(root) {
     var viewport = root.querySelector(".globe-viewport");
     var canvas = root.querySelector(".globe-canvas");
     var pointsBox = root.querySelector(".globe-points");
     var card = root.querySelector(".globe-card");
-    var chipsBox = root.querySelector(".globe-places");
-    var statsBox = root.querySelector(".globe-stats");
 
     if (!DATA || !window.d3 || !window.topojson || !window.WORLD_110M || !canvas || !canvas.getContext) {
-      if (card) card.innerHTML = '<p class="globe-fallback">The globe could not load. The studies are listed on the <a href="research.html">Research page</a>.</p>';
+      if (card) card.innerHTML = '<p class="globe-fallback">The globe could not load. The studies are listed on the <a href="research.html#publications">Research page</a>.</p>';
       return;
     }
 
     var css = getComputedStyle(root);
     var C = {};
-    ["ocean-hi", "ocean", "land", "study", "active", "border", "grid", "rim", "shadow", "arc", "arc-active"].forEach(function (k) {
+    ["sea-hi", "sea", "land", "study", "active", "grid", "rim", "glow", "arc", "arc-active"].forEach(function (k) {
       C[k] = css.getPropertyValue("--globe-" + k).trim();
     });
 
     var ctx = canvas.getContext("2d");
     var world = topojson.feature(WORLD_110M, WORLD_110M.objects.countries);
-    var borders = topojson.mesh(WORLD_110M, WORLD_110M.objects.countries, function (a, b) { return a !== b; });
     var places = DATA.places.filter(function (p) { return studiesAt(p).length; });
     var mapped = places.filter(function (p) { return !p.online; });
     var home = mapped.find(function (p) { return p.home; });
-    var studyNames = new Set(mapped.map(function (p) { return p.atlas || p.country; }));
-    var studyLand = { type: "FeatureCollection", features: world.features.filter(function (f) { return studyNames.has(f.properties.name); }) };
-    var arcs = home ? mapped.filter(function (p) { return !p.home; }).map(function (p) {
-      return { id: p.id, line: { type: "LineString", coordinates: [[home.lon, home.lat], [p.lon, p.lat]] } };
-    }) : [];
+
+    /* ---------- land dots ----------
+       Each country is painted once into an equirectangular index image with its own colour;
+       sampling that image on a latitude-aware grid gives the dots and the country each belongs to. */
+    var countryIndex = {};
+    world.features.forEach(function (f, i) { countryIndex[f.properties.name] = i + 1; });
+    var studyCountries = new Set(mapped.map(function (p) { return countryIndex[p.atlas || p.country]; }).filter(Boolean));
+    var dots = (function () {
+      var IW = 1440, IH = 720;
+      var off = document.createElement("canvas");
+      off.width = IW; off.height = IH;
+      var oc = off.getContext("2d");
+      var eq = d3.geoEquirectangular().scale(IW / (2 * Math.PI)).translate([IW / 2, IH / 2]);
+      var p = d3.geoPath(eq, oc);
+      world.features.forEach(function (f, i) {
+        var id = i + 1;
+        oc.beginPath(); p(f);
+        oc.fillStyle = "rgb(" + (id & 255) + "," + ((id >> 8) & 255) + ",7)";
+        oc.fill();
+      });
+      var img = oc.getImageData(0, 0, IW, IH).data;
+      var out = [];
+      for (var lat = -58; lat <= 82; lat += DOT_STEP) {
+        var step = DOT_STEP / Math.max(0.2, Math.cos(lat * RAD));
+        var jitter = (Math.round(lat / DOT_STEP) % 2) * step * 0.5;
+        for (var lon = -180 + jitter; lon < 180; lon += step) {
+          var x = Math.floor((lon + 180) / 360 * IW), y = Math.floor((90 - lat) / 180 * IH);
+          var k = (y * IW + x) * 4;
+          if (img[k + 2] !== 7 || img[k + 3] < 200) continue;
+          var id = img[k] + (img[k + 1] << 8);
+          out.push({ v: cart(lon, lat), c: id });
+        }
+      }
+      return out;
+    })();
 
     var projection = d3.geoOrthographic().clipAngle(90).precision(0.6);
     var path = d3.geoPath(projection, ctx);
-    var graticule = d3.geoGraticule10();
+    var graticule = d3.geoGraticule().step([20, 20])();
     var sphere = { type: "Sphere" };
 
+    /* Raised arcs from Stanford: points along the great circle, lifted toward the middle. */
+    var arcs = home ? mapped.filter(function (p) { return !p.home; }).map(function (p) {
+      var a = cart(home.lon, home.lat), b = cart(p.lon, p.lat);
+      var interp = d3.geoInterpolate([home.lon, home.lat], [p.lon, p.lat]);
+      var dist = d3.geoDistance([home.lon, home.lat], [p.lon, p.lat]);
+      var lift = 0.03 + 0.1 * (dist / Math.PI);
+      var pts = [];
+      for (var i = 0; i <= 64; i++) {
+        var t = i / 64, ll = interp(t), v = cart(ll[0], ll[1]), h = 1 + lift * Math.sin(Math.PI * t);
+        pts.push([v[0] * h, v[1] * h, v[2] * h]);
+      }
+      return { id: p.id, pts: pts, ab: [a, b] };
+    }) : [];
+
     var state = {
-      rot: [-20, -14, 0],    // starts with Africa in the visible part
-      featured: null,        // place shown in the card
-      chosen: null,          // place picked with a button
+      rot: [-20, -16, 0],
+      featured: null,
+      chosen: null,
       hover: null,
       holdUntil: 0,
       anim: null,
       drag: null,
       running: false,
-      dash: 0
+      t: 0
     };
-    var W = 0, H = 0, R = 0, cx = 0, cy = 0, dpr = 1;
-
-    /* ---------- stats ---------- */
-    if (statsBox) {
-      var countries = new Set(mapped.map(function (p) { return p.country; }));
-      [[countries.size, countries.size === 1 ? "country" : "countries"], [DATA.studies.length, DATA.studies.length === 1 ? "study" : "studies"]].forEach(function (s) {
-        var d = el("div", "globe-stat");
-        d.append(el("b", null, String(s[0])), el("span", null, s[1]));
-        statsBox.append(d);
-      });
-    }
+    var W = 0, H = 0, R = 0, cx = 0, cy = 0, dpr = 1, M = null;
 
     /* ---------- points ---------- */
     var points = {};
@@ -109,24 +147,6 @@
       points[p.id] = a;
     });
 
-    /* ---------- optional place buttons (.globe-places; not used on the homepage) ---------- */
-    var chips = {};
-    if (chipsBox) {
-      places.slice().sort(function (a, b) { return studiesAt(b).length - studiesAt(a).length; }).forEach(function (p) {
-        var b = el("button", "globe-chip" + (p.home ? " is-home" : "") + (p.online ? " is-online" : ""));
-        b.type = "button";
-        b.dataset.place = p.id;
-        b.setAttribute("aria-pressed", "false");
-        b.append(el("i"), el("span", null, p.chip || nameOf(p)));
-        chips[p.id] = b;
-        chipsBox.append(b);
-      });
-      chipsBox.addEventListener("click", function (ev) {
-        var b = ev.target.closest(".globe-chip");
-        if (b) choose(b.dataset.place, true);
-      });
-    }
-
     /* ---------- card ---------- */
     var cardTimer = null;
     function renderCard(id) {
@@ -134,26 +154,14 @@
       card.textContent = "";
       if (!p) {
         card.append(el("h3", null, "Research around the world"));
-        card.append(el("p", "more", "The globe turns on its own. Select a point to go to that place's research."));
+        card.append(el("p", "more", "Select a point to go to the research in that place."));
         return;
       }
       var list = studiesAt(p);
       card.append(el("h3", null, nameOf(p)));
-      card.append(el("p", "globe-card-sub", [p.where, p.headline].filter(Boolean).join(" · ")));
-      var ul = el("ul");
-      list.slice(0, 2).forEach(function (s) {
-        var li = el("li");
-        li.append(el("span", "t", s.title));
-        li.title = s.title + (STATUS[s.status] ? " (" + STATUS[s.status] + ")" : "");
-        ul.append(li);
-      });
-      card.append(ul);
-      if (list.length > 2) card.append(el("p", "more", "and " + plural(list.length - 2, "more study", "more studies")));
-      var a = el("a", "text-link", linkTextOf(p) + " ");
+      card.append(el("p", "globe-card-sub", [p.headline || p.where, plural(list.length, "study", "studies")].filter(Boolean).join(", ")));
+      var a = el("a", "text-link", linkTextOf(p));
       a.href = hrefOf(p);
-      var arrow = el("span", null, "→");
-      arrow.setAttribute("aria-hidden", "true");
-      a.append(arrow);
       card.append(a);
     }
     function feature(id) {
@@ -173,7 +181,6 @@
       if (!p) return;
       state.chosen = id;
       state.holdUntil = performance.now() + HOLD_AFTER_SELECT;
-      Object.keys(chips).forEach(function (k) { chips[k].setAttribute("aria-pressed", String(k === id)); });
       feature(id);
       if (p.online) return;
       var to = targetRotation(p);
@@ -182,6 +189,20 @@
       if (!animate || REDUCED) { state.rot = to; requestDraw(); return; }
       state.anim = { from: from, to: to, start: performance.now(), dur: 1300 };
       start();
+    }
+
+    /* ---------- rotation matrix (d3's rotation applied to the cartesian basis) ---------- */
+    function matrix(rot) {
+      var r = d3.geoRotation(rot);
+      var e = [[0, 0], [90, 0], [0, 90]].map(function (ll) { var q = r(ll); return cart(q[0], q[1]); });
+      return e; // columns
+    }
+    function apply(m, v) {
+      return [
+        m[0][0] * v[0] + m[1][0] * v[1] + m[2][0] * v[2],
+        m[0][1] * v[0] + m[1][1] * v[1] + m[2][1] * v[2],
+        m[0][2] * v[0] + m[1][2] * v[1] + m[2][2] * v[2]
+      ];
     }
 
     /* ---------- drawing ---------- */
@@ -193,9 +214,8 @@
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       var wide = getComputedStyle(viewport).position === "absolute";
-      // A large globe that runs off the right edge (and a little off the top and bottom).
-      if (wide) { R = Math.min(H * 0.54, W * 0.31); cx = W - R * 0.5; cy = H * 0.5; }
-      else { R = W * 0.52; cx = W - R * 0.35; cy = H * 0.5; }
+      if (wide) { R = Math.min(H * 0.46, W * 0.3); cx = W - R * 0.6; cy = H * 0.5; }
+      else { R = W * 0.44; cx = W * 0.5; cy = H * 0.5; }
       projection.translate([cx, cy]).scale(R);
       draw();
     }
@@ -203,61 +223,87 @@
     function draw() {
       if (!W || !H) return;
       projection.rotate(state.rot);
+      M = matrix(state.rot);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
 
-      var halo = ctx.createRadialGradient(cx, cy + R * 0.03, R * 0.92, cx, cy + R * 0.03, R * 1.14);
-      halo.addColorStop(0, C.shadow);
-      halo.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = halo;
-      ctx.beginPath(); ctx.arc(cx, cy + R * 0.03, R * 1.14, 0, 2 * Math.PI); ctx.fill();
+      // atmosphere
+      var glow = ctx.createRadialGradient(cx, cy, R * 0.96, cx, cy, R * 1.22);
+      glow.addColorStop(0, C.glow);
+      glow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(cx, cy, R * 1.22, 0, 2 * Math.PI); ctx.fill();
 
-      var sea = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.08, cx, cy, R);
-      sea.addColorStop(0, C["ocean-hi"]);
-      sea.addColorStop(1, C.ocean);
-      ctx.beginPath(); path(sphere); ctx.fillStyle = sea; ctx.fill();
+      // sea
+      var sea = ctx.createRadialGradient(cx - R * 0.4, cy - R * 0.45, R * 0.05, cx, cy, R);
+      sea.addColorStop(0, C["sea-hi"]);
+      sea.addColorStop(1, C.sea);
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.fillStyle = sea; ctx.fill();
 
-      ctx.beginPath(); path(graticule); ctx.strokeStyle = C.grid; ctx.lineWidth = 0.7; ctx.stroke();
-      ctx.beginPath(); path(world); ctx.fillStyle = C.land; ctx.fill();
-      ctx.beginPath(); path(studyLand); ctx.fillStyle = C.study; ctx.fill();
+      ctx.beginPath(); path(graticule); ctx.strokeStyle = C.grid; ctx.lineWidth = 0.6; ctx.stroke();
+
+      // land dots, grouped by colour so each colour is one fill
+      var featuredCountry = null;
       var fp = state.featured && mapped.find(function (p) { return p.id === state.featured; });
-      if (fp) {
-        var f = world.features.find(function (x) { return x.properties.name === (fp.atlas || fp.country); });
-        if (f) { ctx.beginPath(); path(f); ctx.fillStyle = C.active; ctx.fill(); }
+      if (fp) featuredCountry = countryIndex[fp.atlas || fp.country] || null;
+      var size = Math.max(1.1, R * 0.0052);
+      var groups = { land: [], study: [], active: [] };
+      for (var i = 0; i < dots.length; i++) {
+        var d = dots[i], v = apply(M, d.v);
+        if (v[0] <= 0.06) continue;
+        var g = d.c === featuredCountry ? "active" : studyCountries.has(d.c) ? "study" : "land";
+        groups[g].push(cx + R * v[1], cy - R * v[2], v[0]);
       }
-      ctx.beginPath(); path(borders); ctx.strokeStyle = C.border; ctx.lineWidth = 0.6; ctx.stroke();
+      [["land", C.land], ["study", C.study], ["active", C.active]].forEach(function (gc) {
+        var arr = groups[gc[0]];
+        ctx.fillStyle = gc[1];
+        for (var j = 0; j < arr.length; j += 3) {
+          var z = arr[j + 2], s = size * (0.55 + 0.45 * Math.sqrt(z));
+          ctx.globalAlpha = 0.12 + 0.88 * Math.min(1, (z - 0.06) * 2.2);
+          ctx.fillRect(arr[j] - s / 2, arr[j + 1] - s / 2, s, s);
+        }
+      });
+      ctx.globalAlpha = 1;
 
+      // rim
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.strokeStyle = C.rim; ctx.lineWidth = 1; ctx.stroke();
+
+      // raised arcs
       arcs.forEach(function (a) {
         var on = a.id === state.featured;
-        ctx.beginPath(); path(a.line);
+        ctx.beginPath();
+        var pen = false;
+        for (var k = 0; k < a.pts.length; k++) {
+          var v = apply(M, a.pts[k]);
+          var sx = v[1], sy = v[2];
+          var visible = v[0] > -0.02;
+          if (!visible) { pen = false; continue; }
+          var X = cx + R * sx, Y = cy - R * sy;
+          if (pen) ctx.lineTo(X, Y); else { ctx.moveTo(X, Y); pen = true; }
+        }
         ctx.strokeStyle = on ? C["arc-active"] : C.arc;
-        ctx.lineWidth = on ? 1.8 : 1.1;
-        ctx.setLineDash(REDUCED ? [] : [5, 7]);
-        ctx.lineDashOffset = -state.dash;
+        ctx.lineWidth = on ? 1.6 : 1;
+        ctx.setLineDash(on || REDUCED ? [] : [2, 5]);
+        ctx.lineDashOffset = -state.t * 0.02;
         ctx.stroke();
       });
       ctx.setLineDash([]);
-      ctx.beginPath(); path(sphere); ctx.strokeStyle = C.rim; ctx.lineWidth = 1; ctx.stroke();
 
       placePoints();
     }
 
     function placePoints() {
-      var center = [-state.rot[0], -state.rot[1]];
       mapped.forEach(function (p) {
         var a = points[p.id];
-        var d = d3.geoDistance([p.lon, p.lat], center);
-        var room = Math.PI / 2 - d;
-        if (room < 0.12) { if (!a.hidden) a.hidden = true; return; }
+        var v = apply(M, cart(p.lon, p.lat));
+        if (v[0] < 0.12) { if (!a.hidden) a.hidden = true; return; }
         if (a.hidden) a.hidden = false;
-        var xy = projection([p.lon, p.lat]);
-        a.style.transform = "translate(" + xy[0].toFixed(1) + "px," + xy[1].toFixed(1) + "px)";
-        a.style.opacity = Math.min(1, (room - 0.12) / 0.3).toFixed(2);
+        a.style.transform = "translate(" + (cx + R * v[1]).toFixed(1) + "px," + (cy - R * v[2]).toFixed(1) + "px)";
+        a.style.opacity = Math.min(1, (v[0] - 0.12) / 0.3).toFixed(2);
       });
     }
 
     function nearestToFront() {
-      // The "front" is the visible left part of the globe, LEAD degrees west of its centre.
       var center = [-state.rot[0] - LEAD, -state.rot[1]], best = null, bestD = Math.PI / 2 - 0.2;
       mapped.forEach(function (p) {
         var d = d3.geoDistance([p.lon, p.lat], center);
@@ -277,14 +323,11 @@
         state.rot = state.anim.from.map(function (v, i) { return v + (state.anim.to[i] - v) * k; });
         if (t >= 1) state.anim = null;
       } else if (!REDUCED && !state.drag && !state.hover && now > state.holdUntil) {
-        if (state.chosen) {
-          state.chosen = null;
-          Object.keys(chips).forEach(function (k) { chips[k].setAttribute("aria-pressed", "false"); });
-        }
+        if (state.chosen) state.chosen = null;
         state.rot[0] -= dt * SPEED;
-        state.rot[1] += (-14 - state.rot[1]) * 0.01;
+        state.rot[1] += (-16 - state.rot[1]) * 0.01;
       }
-      if (!REDUCED) state.dash += dt * 0.012;
+      if (!REDUCED) state.t += dt;
       draw();
       if (!state.chosen && !state.hover && now - lastFeatureCheck > 300) {
         lastFeatureCheck = now;
