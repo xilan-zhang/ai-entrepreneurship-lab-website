@@ -51,7 +51,6 @@
     tags.append(el("span", "tag s-" + s.status, STATUS[s.status] || s.status));
     if (s.method) tags.append(el("span", "tag", s.method));
     if (state.view === "year") placesOf(s).forEach(function (id) { tags.append(el("span", "tag place", placeName(id))); });
-    if (s.confirm) tags.append(el("span", "tag confirm", "To confirm"));
     li.append(tags);
     var h = el("h4");
     if (s.url) h.append(link(s.title, s.url)); else h.textContent = s.title;

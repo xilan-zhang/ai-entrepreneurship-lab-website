@@ -30,7 +30,7 @@ Open the pull request using the link GitHub returns. For small text edits, GitHu
 - Do not restore the removed personal email or substitute another person's address without an agreed change.
 - Keep the mentorship study, planned AI advice-presentation study and prospective savings-group pilot distinct. Preparation, proposals and observed findings have different meanings.
 - Support research statements with sources. Do not turn early presentation scenarios, provisional budgets or unreported findings into established results.
-- Research globe entries (`assets/js/research-data.js`) need a public source for the place and the citation. Keep `confirm: true` on entries taken from internal records until the authors approve them, and use the status that applies today: Published, Under review, Working paper, In progress or Planned.
+- Research globe entries (`assets/js/research-data.js`) need a public source for the place and the citation. Keep `confirm: true` on entries taken from internal records until the authors approve them (the flag is not shown on the site), and use the status that applies today: Published, Under review, Working paper, In progress or Planned.
 - Design changes follow [docs/STYLE.md](docs/STYLE.md). Change colours and type through the tokens at the top of `styles.css`.
 - Preserve image credits and meaningful alt text. Record new image sources and permissions in `docs/SOURCES.md`.
 - Use plain English, semantic heading levels, readable contrast and layouts that work on narrow screens.

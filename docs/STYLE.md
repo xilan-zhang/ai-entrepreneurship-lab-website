@@ -45,12 +45,12 @@ Palo Alto `#175e54`, Lagunita `#007c92`, Sandstone and Archway appear only insid
 
 ## Portraits
 
-`assets/people/<name>-portrait.jpg`, 600 × 750. Each is cut out from its source, framed so the face sits at the same height and size, and placed on the shared light backdrop, so nobody's head is cropped and backgrounds do not compete. Keep the source photo next to it and record it in `docs/SOURCES.md`.
+`assets/people/<name>-portrait.jpg`, 600 × 750, in colour. Each is cut out from its source, framed so the face sits at the same height and size, colour-graded toward one skin tone, brightness and white balance (slightly desaturated), and placed on the shared warm light-grey backdrop, so nobody's head is cropped and backgrounds do not compete. Avoid black-and-white portraits: in Chinese usage they read as memorial photos. Keep the source photo next to it and record it in `docs/SOURCES.md`.
 
 ## Research globe
 
 - The globe sits in the homepage's opening field: land as a fine dot screen, countries with studies in cardinal, raised arcs from Stanford. It turns slowly on its own (about 80 seconds per turn). Colours are the `--globe-*` tokens.
-- Every point needs a public source. Mark entries from internal records "To confirm" (`confirm: true` in `assets/js/research-data.js`) until the authors approve them.
+- Every point needs a public source. Flag entries from internal records with `confirm: true` in `assets/js/research-data.js` until the authors approve them. The flag is for maintainers and is not shown on the site.
 - The caption under the buttons shows the place nearest the front of the visible part, with its study count and a link.
 - Each point links straight to that place's research: its own page if there is one (`href`), otherwise `research.html#place-<id>`.
 - Dragging turns the globe; hovering a point pauses on it. All motion stops when the visitor's system asks for reduced motion.

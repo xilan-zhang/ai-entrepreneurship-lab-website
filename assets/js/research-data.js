@@ -2,6 +2,7 @@
   Places and studies for the homepage globe and the Research page list.
   Every study needs a public source (url or evidence). confirm: true marks entries taken from
   internal records or added on request; they need the authors' approval before a public launch.
+  The flag is for maintainers only and is not shown on the site.
   status: published | review | working | ongoing | planned | proposed | project | tbd
   place is where the data were collected; alsoPlaces lists further places for studies that span several.
   Reviewed by Xilan on October 30, 2026 (keep/delete/author order). Compiled October 30, 2026 from publisher pages, Stanford profiles, King Center pages,
@@ -170,7 +171,6 @@ window.LAB_RESEARCH = {
    "venue": "multi-case study",
    "status": "ongoing",
    "method": "Case studies",
-   "confirm": true,
    "summary": "A multi-case study of young companies in the United States and China whose work is done mostly at a computer, tracing how founders divide work between people and AI agents and how that division changes as the company grows.",
    "page": "ai-native-firms.html",
    "url": "ai-native-firms.html"
