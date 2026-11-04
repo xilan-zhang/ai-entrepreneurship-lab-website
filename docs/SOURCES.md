@@ -43,7 +43,7 @@ Photo sources are credited in the pages. The inspected source pages did not iden
 - License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Attribution is required. The resized copies here are shared under the same license.
 - Original: 5247 × 3498 pixels, SHA-1 `e383f675520e94b29523515c9326bf4e65fe4f3a` (matches the Commons record), downloaded October 30, 2026.
 - Changes: resized to 2400 × 1600 (SHA-256 `f5120ad796c0207954c28a17a5935ebdb9f80fc68b238d9d3d15d2e3264e6c52`) and 1200 × 800 (SHA-256 `62963f512f75ad43e257fa30227cc94b90985ead87e7958046bc75b58b572cca`). The navy shading is applied in CSS; the image files are not tinted or cropped.
-- The credit is shown in the homepage hero as "Photo: Frank Schulenburg", linked to the Wikimedia Commons file page, which states the licence and the original. CC BY-SA 4.0 allows attribution through a link to a page with that information. Keep the name and the link.
+- Not shown on the pages since the November 2, 2026 redesign; the files are kept in case the photograph is used again. If it returns, show the credit "Photo: Frank Schulenburg" linked to the Wikimedia Commons file page.
 
 ## People photographs
 
@@ -58,6 +58,10 @@ Profile photos downloaded on October 30, 2026 from each person's public page, fo
 | `assets/people/ronald-wang.jpg` | [Stanford Profiles](https://profiles.stanford.edu/ronald-wang) | `d2fc94ef6ad7f85e0ee5d9472fdff1982e5bb4b4e13aa0bb9bb289ac14624f87` |
 | `assets/people/tess-lallemant.jpg` | [tesslallemant.com](https://www.tesslallemant.com/) (cropped to a square and resized; original SHA-256 `de3b0ab655aa0d6cbbf1827722bd41c201a5e1c2b8b5ec2bf9dc2114eaec57d1`) | `6900cdc0e8d92630df5b342a401d495a1735fabc2b6155635bd63e1ef6548c67` |
 
+### Portraits shown on the site
+
+`assets/people/<name>-portrait.jpg` (600 × 750) are what the pages display. Each was made on November 2, 2026 from the source photo listed above: the person was cut out with a U-2-Net human-segmentation model, framed so the face sits at the same size and height, colour-graded toward a common skin tone, brightness and white balance, and placed on the shared light backdrop. The two tightly cropped sources (Tess Lallemant, Ronald Wang) have their lowest rows stretched slightly so the shoulders reach the bottom of the frame. Guankai Zhai's portrait uses a studio headshot he supplied on November 2, 2026 in place of the STVP photo (the original is not stored in this repository).
+
 Roles shown are current professional roles from the same pages. Guankai Zhai's PhD programme is from [MS&E's Autumn 2025 incoming PhD students](https://msande.stanford.edu/news/meet-our-incoming-phd-students-autumn-2025); Ronald Wang's from his [MS&E page](https://msande.stanford.edu/people/ronald-wang); Tess Lallemant's postdoctoral fellowship at the King Center from her own site. Order: faculty, then postdoctoral fellows, then students by last name.
 
 ## Research map
@@ -65,6 +69,12 @@ Roles shown are current professional roles from the same pages. Guankai Zhai's P
 - `assets/js/research-data.js` holds every globe entry with its citation, source link and status. It was compiled on October 30, 2026 from publisher pages, Stanford Profiles, King Center pages, chuckeesley.com, the AEA RCT Registry and a check of Chuck Eesley's Google Scholar profile. Each entry must have a public source; entries marked `confirm: true` come from internal records or were added on request (Mexico, Bangladesh) and need the authors' approval before a public launch.
 - Country boundaries: [world-atlas 2.0.2](https://github.com/topojson/world-atlas) (`countries-110m`), derived from [Natural Earth](https://www.naturalearthdata.com/) public-domain data. Package license: `assets/vendor/LICENSE-world-atlas.txt` (ISC). Stored as `assets/vendor/world-110m.js` so the map works from a local file.
 - [D3 7.9.0](https://d3js.org/) and [topojson-client 3.1.0](https://github.com/topojson/topojson-client), ISC licenses in `assets/vendor/`.
+
+## Research figures
+
+- `strategic-tech.html` and `climate-tech.html`: estimates and model outputs from the authors' working papers and INFORMS 2026 presentation, as added by Yikai Cao.
+- Battery program adoption (homepage, Research page, `battery-subsidies.html`): the number of prefecture-level cities adopting a battery-manufacturing support program each year, 2009–2025, from the authors' policy data (56 adopting cities of 297). Counts only; no estimates are shown.
+- AI-native companies (homepage, Research page, `ai-native-firms.html`): an illustration of the study design with two hypothetical cases. It is labelled as not data.
 
 ## Typefaces
 

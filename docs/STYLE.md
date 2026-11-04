@@ -4,70 +4,70 @@ The visual rules for the lab website. Tokens live at the top of `styles.css`; ch
 
 ## Direction
 
-Chosen by Xilan on October 30, 2026:
+Revised November 2, 2026, replacing the October 30 photo-hero draft (Xilan agreed that the design could change substantially).
 
-- **Overall:** a calm, editorial look close to the [AI Governance Lab](https://aigovlab.stanford.edu/): a photograph hero, then light bands with generous space. Avoid very high contrast, such as large dark bands next to white.
-- **Layout ideas:** from her whole-look picks (RegLab, Politics and Social Change Lab, MIT Initiative on the Digital Economy, AI Governance Lab): a full-width photo hero with the lab name over it, a single long homepage, and thin stripes as a quiet graphic motif on page headings.
-- **Type:** the AI Governance Lab pairing, Newsreader with Public Sans.
-- **Colour:** Stanford colours as STVP uses them. No orange.
+- **One bold moment.** The homepage opens on a dark field with the research globe and the lab name. Everything after it is quiet: white and mist bands, a left-hand section column, large serif statements and generous space.
+- **The research is the imagery.** Project tiles and project pages lead with the papers' own figures (event study, financing regimes, program adoption) or field photographs, not stock pictures.
+- **Restraint.** No cards with shadows, no small uppercase labels, no decorative gradients outside the opening field. Arrows only on "back" and external links.
 
-No text, logos or photographs are copied from any of these sites.
+No text, logos or photographs are copied from other lab sites.
 
 ## Type
 
 | Role | Face | Use |
 | --- | --- | --- |
-| Headings | Newsreader, weight 500 | Page and section titles, wordmark, card and study titles |
-| Body | Public Sans, 400–600 | Paragraphs, navigation, labels, buttons |
+| Display and headings | Newsreader, weights 300–400 | Lab name, page titles, section titles, statements, project and study titles, venues in italics |
+| Text | Public Sans, 400–600 | Paragraphs, navigation, labels, buttons, figure text |
 
-Both are under the SIL Open Font License and are stored in `assets/fonts/`, so the pages work offline. Body text is 17px. Section titles have a short cardinal rule beneath them. No small uppercase labels above titles.
+Both are under the SIL Open Font License and stored in `assets/fonts/`, so the pages work offline. Body text is 17px. Large titles are light (300–350) with tight tracking; section titles carry a short cardinal rule beneath them.
 
 ## Colour
 
-Core palette, from Stanford's identity colours as used on stvp.stanford.edu:
+| Token | Value | Use |
+| --- | --- | --- |
+| `--cardinal` | `#8c1515` | Stanford Cardinal: links, primary button, rules, status text, figure accents |
+| `--ember` | `#e0565b` | Cardinal lifted for the dark field: globe points, rule and arcs |
+| `--ink` | `#2e2d29` | Stanford Black: text and headings |
+| `--night` | `#1c1b19` | The homepage field and the footer |
+| `--mist` | `#f3f3f1` | Light bands, page headings, figure panels |
+| `--line` | `#e1dfdb` | Hairlines |
+| `--stone` | `#7f7776` | Captions and metadata |
 
-| Token | Value | Stanford name | Use |
-| --- | --- | --- | --- |
-| `--cardinal` | `#8c1515` | Cardinal Red | Accent: links, primary button, rules, map points |
-| `--cardinal-dark` | `#820000` | Cardinal Dark | Button hover |
-| `--ink` | `#2e2d29` | Stanford Black | Body text and headings |
-| `--ink-soft` | `#53565a` | Cool Grey | Secondary text |
-| `--stone` | `#7f7776` | Stone | Captions and metadata |
-| `--fog` | `#f4f4f4` | Fog | Footer |
-| `--warm` | `#f7f4f0` | (light stone tint) | Alternate bands: map, People, page headings |
-
-Accents, used sparingly for marks and never for large areas: Palo Alto `#175e54` (Stanford on the map, a direction card), Lagunita `#007c92` (in-progress tags, focus outline), Sandstone `#d2c295` and Archway `#5d4b3c` (under-review tags). Do not use Poppy or other oranges.
-
-The only dark area is the photo hero, shaded with a translucent Stanford Black gradient.
+Palo Alto `#175e54`, Lagunita `#007c92`, Sandstone and Archway appear only inside figures and status tags. No orange.
 
 ## Layout
 
-- Homepage rhythm: photo hero, white (About), warm (research globe), white (Research), warm (People), white (Stay in Touch), fog footer.
-- Content column 1200px with a 20–40px gutter.
-- Hero: Huang Engineering Center photograph, centred serif title, short white rule, one short line ("Rethinking entrepreneurship in the age of AI."), two buttons. Keep the photo credit visible.
-- No oversized background words.
-- Cards: white, 1px warm-grey border, 8px radius, no shadows.
-- People: a grid of cards with round portrait photos (`assets/people/`). Use a monogram when there is no photo. List current professional roles only, not proposed lab roles. Order: faculty, then postdoctoral fellows, then everyone else by last name; the add-members card stays last.
+- Content column 1320px with a 20–56px gutter.
+- Homepage: dark field with globe, About, Research (two lines of work, five project tiles), Selected publications (mist), People, dark footer with contact.
+- Sections use a 3/9 split: section title on the left (sticky on wide screens), content on the right. It collapses to one column below 980px.
+- Project pages: mist heading with the title on the left and the paper's figure on the right, then 3/9 sections, then a "Next project" link. The project order is set in the footer and the next-project links.
+- People: one large portrait for faculty, then a three-column grid; the "More members" placeholder stays last. Portraits are processed to one standard (see below). List current professional roles only.
 
-## Research map
+## Portraits
 
-- Every point needs a public source. Mark entries from internal records "To confirm" (`confirm: true` in `assets/js/research-data.js`) until the authors approve them.
-- Status labels: Published, Under review, Working paper, In progress, Planned, Under discussion, Funded project, Details to add. Do not describe planned work as under way, and do not state journal review stages such as R&R; show unpublished manuscripts as Working paper.
-- The map is a globe on the homepage, not a separate page. It is large, runs off the right edge of the section (and slightly off the top and bottom), and turns slowly on its own (about 80 seconds per turn). The card beside it shows the place nearest the front of the visible part. No totals and no place buttons.
-- Dragging turns the globe; hovering a point pauses on it.
-- Each point links straight to that place's research: its own page if there is one (`href` in the data, e.g. `uganda.html`), otherwise its section on `research.html#place-<id>`.
-- Light globe: warm-white sea, warm-grey land, study countries tinted pale cardinal, dashed cardinal arcs from Stanford. Stanford is the Palo Alto green point. Colours are the `--globe-*` tokens in `styles.css`.
-- All motion stops when the visitor's system asks for reduced motion.
+`assets/people/<name>-portrait.jpg`, 600 × 750, in colour. Each is cut out from its source, framed so the face sits at the same height and size, colour-graded toward one skin tone, brightness and white balance (slightly desaturated), and placed on the shared warm light-grey backdrop, so nobody's head is cropped and backgrounds do not compete. Avoid black-and-white portraits: in Chinese usage they read as memorial photos. Keep the source photo next to it and record it in `docs/SOURCES.md`.
+
+## Research globe
+
+- The globe sits in the homepage's opening field: land as a fine dot screen, countries with studies in cardinal, raised arcs from Stanford. It turns slowly on its own (about 80 seconds per turn). Colours are the `--globe-*` tokens.
+- Every point needs a public source. Flag entries from internal records with `confirm: true` in `assets/js/research-data.js` until the authors approve them. The flag is for maintainers and is not shown on the site.
+- The caption under the buttons shows the place nearest the front of the visible part, with its study count and a link.
+- Each point links straight to that place's research: its own page if there is one (`href`), otherwise `research.html#place-<id>`.
+- Dragging turns the globe; hovering a point pauses on it. All motion stops when the visitor's system asks for reduced motion.
 
 ## Research data
 
-- `assets/js/research-data.js` is the single source for the globe and the Research page list (`research.html`, grouped by place, with `#place-<id>` anchors). The Research page has no method note.
-- Authors appear in the order the authors use. Xilan reviewed every entry on October 30, 2026 (keep, delete or reorder authors); keep that review in mind before re-adding deleted items.
-- To add or correct a study, edit the data file and check both pages in a browser.
+- `assets/js/research-data.js` is the single source for the globe, the homepage's selected publications and the Research page list. A study that spans several places lists the extra places in `alsoPlaces`.
+- Status labels: Published, Under review, Working paper, In progress, Planned, Under discussion, Funded project, Details to add. Do not describe planned work as under way, and do not state journal review stages such as R&R; show unpublished manuscripts as Working paper.
+- The Research page list can be filtered by status and arranged by year or by place. Links to `#place-<id>` open the place view.
+
+## Figures
+
+Inline SVG, drawn with the `fig-*` classes in `styles.css`. One sentence of `<desc>` per figure. Illustrations that are not data say so inside the figure and in the caption.
 
 ## Checks before merging
 
-- Preview the homepage, Research page and Uganda page at desktop width and at 390 px. Nothing should scroll sideways, and the globe text and card should not overlap at short window heights (for example 1280 × 720).
+- Preview the homepage, Research page and each project page at 1440 px, at 1280 × 720 and at 390 px. Nothing should scroll sideways.
 - Keep the photo credits and the `docs/SOURCES.md` entries in step with any image change.
 
 ## Writing
